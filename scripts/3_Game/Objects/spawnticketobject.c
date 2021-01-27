@@ -39,4 +39,4 @@ class SpawnTicketObject
     {
         return m_randomradius;
     }
-}
+};

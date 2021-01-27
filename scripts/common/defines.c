@@ -2,6 +2,4 @@
 #define BASIC_SPAWN_SELECT
 #endif
 
-#ifndef BASIC_SPAWN_SELECT_DEBUG
 #define BASIC_SPAWN_SELECT_DEBUG
-#endif

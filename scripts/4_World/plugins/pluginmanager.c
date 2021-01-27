@@ -17,7 +17,7 @@ modded class PluginManager
 		}
 		else
 		{
-			RegisterPlugin( "PluginBasicSpawnSelectServer", 		true, 	false );
+			RegisterPlugin( "PluginBasicSpawnSelectClient", 		true, 	false );
 		}
 	}
-}
+};

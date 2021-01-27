@@ -39,17 +39,29 @@ class CfgMods
 			class gameScriptModule
             {
                 value = "";
-                files[] = {"BasicSpawnSelect/scripts/3_Game", "BasicSpawnSelect/scripts/common"};
+                files[] = 
+				{
+					"BasicSpawnSelect/scripts/common",
+					"BasicSpawnSelect/scripts/3_Game"
+				};
             };
 			class worldScriptModule
             {
                 value = "";
-                files[] = {"BasicSpawnSelect/scripts/4_World", "BasicSpawnSelect/scripts/common"};
+                files[] = 
+				{
+					"BasicSpawnSelect/scripts/common",
+					"BasicSpawnSelect/scripts/4_World"
+				};
             };
 			class missionScriptModule
             {
                 value = "";
-                files[] = {"BasicSpawnSelect/scripts/5_Mission", "BasicSpawnSelect/scripts/common"};
+                files[] = 
+				{
+					"BasicSpawnSelect/scripts/common",
+					"BasicSpawnSelect/scripts/5_Mission"
+				};
             };
         };
 	};

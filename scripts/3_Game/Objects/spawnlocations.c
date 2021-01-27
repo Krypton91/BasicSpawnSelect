@@ -48,4 +48,4 @@ class SpawnLocationObject
     {
         return m_randomradius;
     }
-}
+};
