@@ -1,0 +1,101 @@
+FrameWidgetClass SpawnSelectRoot {
+ position 0.00039 -0.00039
+ size 1.00136 0.99926
+ halign center_ref
+ valign center_ref
+ hexactpos 0
+ vexactpos 0
+ hexactsize 0
+ vexactsize 0
+ {
+  PanelWidgetClass PanelWidget0 {
+   ignorepointer 1
+   size 0.82309 0.79494
+   halign center_ref
+   valign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style rover_sim_black
+   {
+    MapWidgetClass SpawnSelectMap {
+     position 0.007 0.118
+     size 0.71191 0.85385
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+    }
+    TextWidgetClass SpawnSelectText {
+     ignorepointer 1
+     position 0.00853 0.02071
+     size 0.71042 0.088
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     text "Choose Your Spawn"
+     font "gui/fonts/metron48"
+     "text halign" center
+    }
+    PanelWidgetClass PanelSeperator {
+     ignorepointer 1
+     position 0.22617 0.00124
+     size 0.00175 1.00025
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_colorable
+    }
+    TextWidgetClass LocationsText {
+     ignorepointer 1
+     position 0.7347 0.02031
+     size 0.26099 0.088
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     text "Locations"
+     font "gui/fonts/metron48"
+     "text halign" center
+    }
+    UniversalListboxWidgetClass UniversalListboxWidget0 {
+     color 0 0 0 1
+     position 0.73445 0.11854
+     size 0.25829 0.47424
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     font "gui/fonts/metron22"
+    }
+   }
+  }
+  ButtonWidgetClass BtnSpawnOnLocation {
+   color 0.1569 0.2745 0.6235 1
+   position 0.69343 0.58081
+   size 0.21206 0.07
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style Colorable
+   text "Spawn on Location"
+  }
+  ButtonWidgetClass BtnRandom {
+   color 0.1569 0.2745 0.6235 1
+   position 0.69353 0.65686
+   size 0.21206 0.07
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style Colorable
+   text "Random Spawn"
+  }
+ }
+}
