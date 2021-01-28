@@ -1,8 +1,7 @@
 class PluginBasicSpawnSelectClient extends PluginBase
 {
-    protected ref SpawnSelectConfig     m_ServerConfig = new ref SpawnSelectConfig();
     protected ref BasicSpawnSelectMenu  m_SpawnMenu;
-
+    ref SpawnSelectConfig     m_ServerConfig = new ref SpawnSelectConfig();
     void PluginBasicSpawnSelectClient()
     {
         Init();
@@ -11,7 +10,8 @@ class PluginBasicSpawnSelectClient extends PluginBase
     void Init()
     {
         LogLine("Client Init Start");
-        GetRPCManager().AddRPC("BasicSpawnSelect","ServerConfigResponse", this, SingleplayerExecutionType.Server);
+        GetRPCManager().AddRPC("BasicSpawnSelect","ServerConfigResponse", this, SingleplayerExecutionType.Client);
+        GetRPCManager().AddRPC("BasicSpawnSelect","OpenSpawnSelectMenu", this, SingleplayerExecutionType.Client);
     }
 
     void OpenSpawnMenu()
@@ -19,7 +19,6 @@ class PluginBasicSpawnSelectClient extends PluginBase
         if(GetGame().GetUIManager().GetMenu() == NULL && m_SpawnMenu == null)
         {
             m_SpawnMenu = BasicSpawnSelectMenu.Cast(GetGame().GetUIManager().EnterScriptedMenu(BASIC_SPAWNSELECTMENU, null));
-            m_SpawnMenu.SetIsSpawnMenuOpen(true);
         }
         #ifdef BASIC_SPAWN_SELECT_DEBUG
         else if(GetGame().GetUIManager().GetMenu() != NULL && m_SpawnMenu && m_SpawnMenu.IsSpawnMenuVisible())
@@ -33,7 +32,6 @@ class PluginBasicSpawnSelectClient extends PluginBase
             if(GetGame().GetUIManager().GetMenu() == NULL && !m_SpawnMenu.IsSpawnMenuVisible())
             {
                 GetGame().GetUIManager().ShowScriptedMenu(m_SpawnMenu, NULL);
-                m_SpawnMenu.SetIsSpawnMenuOpen(true);
             }
         }
     }
@@ -49,8 +47,31 @@ class PluginBasicSpawnSelectClient extends PluginBase
         }
     }
 
+    void OpenSpawnSelectMenu(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+    {
+        if(type == CallType.Client)
+        {
+            GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.TryToOpenSpawnSelectMenu, 1500, true);
+        }
+    }
 
-    /* Getter & Setter Section*/
+    void TryToOpenSpawnSelectMenu()
+    {
+        if (g_Game.GetUIManager().GetMenu() == NULL)
+		{
+			if (g_Game.GetMissionState() == DayZGame.MISSION_STATE_GAME && GetGame().GetMission().GetHud())
+			{
+                OpenSpawnMenu();
+				GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.TryToOpenSpawnSelectMenu);		
+			}																					
+		}
+    }
+
+    ref array<ref SpawnTicketObject> GetPossibleSpawnTickets()
+    {
+        return m_ServerConfig.SpawnTickets;
+    }
+    /* Getter & Setter Section */
     ref array<ref SpawnLocationObject> GetPossibleServerSpawns()
     {
         return m_ServerConfig.SpawnLocations;

@@ -2,17 +2,13 @@ class SpawnTicketObject
 {
     protected string m_classname;
     protected string m_ID;
-    protected string m_SpawnName;
-    protected vector m_Locations;
-    protected float  m_randomradius;
+    protected ref array <ref SpawnLocationObject> m_PossibleSpawn;
 
-    void SpawnTicketObject(string Classname, string Id, string SpawnName, vector Location, float RandomRadius)
+    void SpawnTicketObject(string Classname, string Id, ref array<ref SpawnLocationObject> Spawn)
     {
         m_classname = Classname;
         m_ID = Id;
-        m_Locations = Location;
-        m_SpawnName = m_SpawnName;
-        m_randomradius = RandomRadius;
+        m_PossibleSpawn = Spawn;
     }
 
     string GetClassName()
@@ -24,19 +20,9 @@ class SpawnTicketObject
     {
         return m_ID;
     }
-    
-    string GetSpawnName()
-    {
-        return m_SpawnName;        
-    }
 
-    vector GetLocation()
+    ref array <ref SpawnLocationObject> GetLocationsFromTicket()
     {
-        return m_Locations;
-    }
-
-    float GetRandomRadius()
-    {
-        return m_randomradius;
+        return m_PossibleSpawn;
     }
 };

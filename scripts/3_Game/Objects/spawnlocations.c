@@ -16,6 +16,11 @@ class SpawnLocationObject
         return m_locationname;
     }
 
+    vector GetExactSpot()
+    {
+        return m_spawnlocation;
+    }
+
     vector GetSpawnRandomSpot()
     {
         local vector rndLoc = RandomXY(m_spawnlocation);
@@ -47,7 +52,7 @@ class SpawnLocationObject
         return Vector(NewX, 0, NewY);
     }
 
-    float GetRandomRadius()
+    float GetExactRadius()
     {
         return m_randomradius;
     }

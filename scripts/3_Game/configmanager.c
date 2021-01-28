@@ -25,8 +25,8 @@ class SpawnSelectConfig
         SpawnLocations.Insert(new ref SpawnLocationObject("West Balota", Vector(4025.159912,6.494447,2620.459961), 1000));
         SpawnLocations.Insert(new ref SpawnLocationObject("Chernogorsk", Vector(6387.430176,9.290138,2699.479980), 1000));
         SpawnLocations.Insert(new ref SpawnLocationObject("Elektrozavodsk", Vector(10322.400391,5.811278,2171.159912), 1000));
-        SpawnTickets.Insert(new ref SpawnTicketObject("BasicSpawnSelect_SpawnTicket", "Bandit", "Green Mtn", Vector(1234.21,233.2,23432.4), 200));
-        SpawnTickets.Insert(new ref SpawnTicketObject("BasicSpawnSelect_SpawnTicket", "Admin", "Green Mtn", Vector(1234.21,233.2,23432.4), 200));
+        SpawnTickets.Insert(new ref SpawnTicketObject("BasicSpawnSelect_SpawnTicket", "Bandit", SpawnLocations));
+        SpawnTickets.Insert(new ref SpawnTicketObject("BasicSpawnSelect_SpawnTicket", "Admin",  SpawnLocations));
 
         SaveSpawnConfig();
     }
@@ -57,6 +57,7 @@ class SpawnSelectConfig
         return settings;
     }
 };
+
 /* Global Getter for config */
 static ref SpawnSelectConfig g_SpawnSelectConfig;
 static ref SpawnSelectConfig GetBasicSpawnSelectServerConfig() 

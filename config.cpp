@@ -67,3 +67,22 @@ class CfgMods
         };
 	};
 };
+
+class CfgVehicles
+{
+	class Paper;
+	class BasicSpawnSelect_SpawnTicket_base: Paper
+	{
+	};
+	class BasicSpawnSelect_SpawnTicketBandit: BasicSpawnSelect_SpawnTicket_base
+	{
+		displayName="Spawn Select Ticket (Bandit)";
+		descriptionShort="This ticket is to open the SpawnSelect Menu!";
+	};
+
+	class BasicSpawnSelect_SpawnTicketAdmin: BasicSpawnSelect_SpawnTicket_base
+	{
+		displayName="Spawn Select Ticket (Admin)";
+		descriptionShort="This ticket is to open the SpawnSelect Menu!";
+	};
+};

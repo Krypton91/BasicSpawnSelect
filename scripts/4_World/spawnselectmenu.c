@@ -24,7 +24,7 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
             m_LocationList                  = TextListboxWidget.Cast(layoutRoot.FindAnyWidget("LocationList"));
             m_IsMenuInitialized = true;
         }
-
+        GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.UpdateMarker, 500, true);
         return layoutRoot;
     }
     
@@ -43,6 +43,8 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
 		GetGame().GetMission().PlayerControlDisable(INPUT_EXCLUDE_ALL);
 
         GetGame().GetUIManager().ShowUICursor( true );
+
+        SetIsSpawnMenuOpen( true );
 	}
 
     override void OnHide()
@@ -53,11 +55,13 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
 
 		GetGame().GetInput().ResetGameFocus();
 
-		GetGame().GetMission().PlayerControlEnable(false);
+		GetGame().GetMission().PlayerControlEnable( false );
 
         GetGame().GetUIManager().ShowUICursor( false );
 
         SetIsSpawnMenuOpen( false );
+
+        GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.UpdateMarker);	
 
 		Close();
     }
@@ -66,17 +70,29 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
 	{
         if(m_LocationList)
             local int row_index = m_LocationList.GetSelectedRow();
+        
         switch(w)
         {
             case m_BtnSpawnOnSelectedLocation:
                 HandleTeleportToSpawnPoint(row_index);
+                GetGame().GetUIManager().HideScriptedMenu(this);
                 break;
             case m_BtnRandomSpawn:
                 HandleTeleportToRandomPoint();
+                GetGame().GetUIManager().HideScriptedMenu(this);
                 break;
         }
 
         return super.OnClick(w, x, y, button);
+    }
+
+    void UpdateMarker()
+    {
+        local int row_index = m_LocationList.GetSelectedRow();
+        if(row_index != -1)
+        {
+            HandleDrawSpotOnMap(row_index);
+        }
     }
 
     void HandleTeleportToRandomPoint()
@@ -113,15 +129,56 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
                 Error("Error m_selectedSpawn was null, if you see this message a few seconds befor, then the crash was not because this.");
             }
     }
+    void HandleDrawSpotOnMap(int rowindex)
+    {
+        m_BasicSpawnMapWidget.ClearUserMarks();
+        vector LocalSpawnMarkerPos = m_PossibleSpawns.Get(rowindex).GetExactSpot();
+		float LocalSpawnRadius = m_PossibleSpawns.Get(rowindex).GetExactRadius();
+		m_BasicSpawnMapWidget.AddUserMark(LocalSpawnMarkerPos, m_PossibleSpawns.Get(rowindex).GetName(), ARGB(255,255,0,255), "\\dz\\gear\\navigation\\data\\map_tree_ca.paa");
+        SetMapPos(LocalSpawnMarkerPos);
+        m_BasicSpawnMapWidget.SetScale(0.4);
+        Print("Marker Drawed!");
+    }
 
     void LoadSpawnPoints()
     {
+        PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+        if(!player) return;
+
+        ItemBase item_in_hands = ItemBase.Cast(player.GetItemInHands());
+
         if(m_LocationList && m_LocationList.GetNumItems() <= 0)
-            m_LocationList.ClearItems();
-        
-        for(int i = 0; i < m_PossibleSpawns.Count(); i++)
+                m_LocationList.ClearItems();
+
+        BasicSpawnSelect_SpawnTicket_base spawnTicket;
+        if(item_in_hands && Class.CastTo(spawnTicket, item_in_hands))
         {
-            m_LocationList.AddItem( m_PossibleSpawns.Get(i).GetName(), NULL, 0 );
+            //Load SpawnPoints from ticket.
+            if(item_in_hands.IsRuined())
+                return;
+            
+            for(int i = 0; i < GetSpawnSelectClient().GetPossibleSpawnTickets().Count(); i++)
+            {
+                bool entryFound = false;
+                if(GetSpawnSelectClient().GetPossibleSpawnTickets().Get(i).GetClassName() && spawnTicket.IsSpawnSelectTicket() && spawnTicket.GetSpawnTicketId() == GetSpawnSelectClient().GetPossibleSpawnTickets().Get(i).GetId())
+                {
+                    entryFound = true;
+                    //100% xD
+                    for(int n = 0; n < GetSpawnSelectClient().GetPossibleSpawnTickets().Get(i).GetLocationsFromTicket().Count(); n++)
+                    {
+                        m_LocationList.AddItem( GetSpawnSelectClient().GetPossibleSpawnTickets().Get(i).GetLocationsFromTicket().Get(n).GetName(), NULL, 0 );
+                    }
+                }
+                if(entryFound)
+                    break;
+            }
+        }
+        else
+        {
+            for(int o = 0; o < m_PossibleSpawns.Count(); o++)
+            {
+                m_LocationList.AddItem( m_PossibleSpawns.Get(o).GetName(), NULL, 0 );
+            }
         }
     }
 
