@@ -19,7 +19,8 @@ class CfgPatches
 
 class CfgMods 
 {
-	class BasicSpawnSelect {
+	class BasicSpawnSelect 
+	{
 		dir = "BasicSpawnSelect";
 		picture = "";
 		action = "";

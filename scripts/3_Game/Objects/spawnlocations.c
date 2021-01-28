@@ -20,11 +20,13 @@ class SpawnLocationObject
     {
         local vector rndLoc = RandomXY(m_spawnlocation);
         local int maxCount = 50;
-        while (!GetGame().SurfaceIsSea(rndLoc[0], rndLoc[2]) && !GetGame().SurfaceIsPond(rndLoc[0],rndLoc[2]) && maxCount > 0){
+        while ((GetGame().SurfaceIsSea(rndLoc[0], rndLoc[2]) || GetGame().SurfaceIsPond(rndLoc[0],rndLoc[2])) && maxCount > 0)
+        {
             maxCount--;
             rndLoc = RandomXY(m_spawnlocation);
         }
-        if (maxCount <= 0){ //If couldn't get a good location return the location
+        if (maxCount <= 0) //If couldn't get a good location return the location
+        {
             return m_spawnlocation;
         }
         rndLoc[1] = GetGame().SurfaceY(rndLoc[0],rndLoc[2]);
@@ -32,7 +34,8 @@ class SpawnLocationObject
         
     }
 
-    vector RandomXY( vector spot){
+    protected vector RandomXY( vector spot)
+    {
         float rndT = Math.RandomFloat(0,1) * 2 * Math.PI;
         float rndR = m_randomradius * Math.Sqrt(Math.RandomFloat(0,1)) * 0.90;
         //Adding 10% of the radius to make so its not in the center feel like this will just seem less random

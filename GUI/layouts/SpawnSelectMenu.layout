@@ -63,14 +63,15 @@ FrameWidgetClass SpawnSelectRoot {
      font "gui/fonts/metron48"
      "text halign" center
     }
-    UniversalListboxWidgetClass SpawnLocationList {
+    TextListboxWidgetClass LocationList {
      color 0 0 0 1
-     position 0.73445 0.11854
-     size 0.25829 0.47424
+     position 0.73538 0.11426
+     size 0.25754 0.48154
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
+     style Default
      font "gui/fonts/metron22"
     }
    }
@@ -85,6 +86,7 @@ FrameWidgetClass SpawnSelectRoot {
    vexactsize 0
    style Colorable
    text "Spawn on Location"
+   font "gui/fonts/metron22"
   }
   ButtonWidgetClass BtnRandom {
    color 0.1569 0.2745 0.6235 1
@@ -96,6 +98,7 @@ FrameWidgetClass SpawnSelectRoot {
    vexactsize 0
    style Colorable
    text "Random Spawn"
+   font "gui/fonts/metron22"
   }
  }
 }
