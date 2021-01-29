@@ -21,7 +21,7 @@ FrameWidgetClass SpawnSelectRoot {
    {
     MapWidgetClass SpawnSelectMap {
      disabled 0
-     ignorepointer 0
+     ignorepointer 1
      position 0.007 0.118
      size 0.71191 0.85385
      hexactpos 0

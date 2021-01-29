@@ -1,4 +1,4 @@
-const protected static string m_AdminsPath = m_ProfileDIR + m_ConfigDIR + "/" + "admin-config.json";
+const protected static string m_SSAdminsPath = m_SSProfileDIR + m_SSConfigDIR + "/" + "admin-config.json";
 
 class AdminSpawnSelectConfig
 {
@@ -18,20 +18,20 @@ class AdminSpawnSelectConfig
 
     void SaveAdminConfig()
     {
-        if (!FileExist(m_ProfileDIR + m_ConfigDIR + "/"))
-			MakeDirectory(m_ProfileDIR + m_ConfigDIR + "/");
+        if (!FileExist(m_SSProfileDIR + m_SSConfigDIR + "/"))
+			MakeDirectory(m_SSProfileDIR + m_SSConfigDIR + "/");
 
-        JsonFileLoader<AdminSpawnSelectConfig>.JsonSaveFile(m_AdminsPath, this);
+        JsonFileLoader<AdminSpawnSelectConfig>.JsonSaveFile(m_SSAdminsPath, this);
     }
 
     static ref AdminSpawnSelectConfig LoadConfig()
     {
         ref AdminSpawnSelectConfig settings = new AdminSpawnSelectConfig();
-        if(!FileExist(m_ConfigDIR))
-            MakeDirectory(m_ConfigDIR);
-        if(FileExist(m_AdminsPath))
+        if(!FileExist(m_SSConfigDIR))
+            MakeDirectory(m_SSConfigDIR);
+        if(FileExist(m_SSAdminsPath))
         {
-            JsonFileLoader<AdminSpawnSelectConfig>.JsonLoadFile(m_AdminsPath, settings);
+            JsonFileLoader<AdminSpawnSelectConfig>.JsonLoadFile(m_SSAdminsPath, settings);
         }
         else
         {

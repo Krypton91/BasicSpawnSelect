@@ -1,6 +1,6 @@
-const protected static string m_ProfileDIR = "$profile:";
-const protected static string m_ConfigDIR = "BasicSpawnSelect";
-const protected static string m_ConfigPath = m_ProfileDIR + m_ConfigDIR + "/" + "server-config.json";
+const protected static string m_SSProfileDIR = "$profile:";
+const protected static string m_SSConfigDIR = "BasicSpawnSelect";
+const protected static string m_SSConfigPath = m_SSProfileDIR + m_SSConfigDIR + "/" + "server-config.json";
 
 class SpawnSelectConfig
 {
@@ -29,23 +29,23 @@ class SpawnSelectConfig
 
     void SaveSpawnConfig()
     {
-        if (!FileExist(m_ProfileDIR + m_ConfigDIR + "/"))
-			MakeDirectory(m_ProfileDIR + m_ConfigDIR + "/");
+        if (!FileExist(m_SSProfileDIR + m_SSConfigDIR + "/"))
+			MakeDirectory(m_SSProfileDIR + m_SSConfigDIR + "/");
 
-        JsonFileLoader<SpawnSelectConfig>.JsonSaveFile(m_ConfigPath, this);
+        JsonFileLoader<SpawnSelectConfig>.JsonSaveFile(m_SSConfigPath, this);
     }
 
     void UpdateTickets(string Classname, string Id, vector UsePosition, float UseRadius, ref array<ref SpawnLocationObject> Spawn)
     {
         SpawnTickets.Insert(new ref SpawnTicketObject(Classname, Id, UsePosition, UseRadius, Spawn));
-        JsonFileLoader<SpawnSelectConfig>.JsonSaveFile(m_ConfigPath, this);
+        JsonFileLoader<SpawnSelectConfig>.JsonSaveFile(m_SSConfigPath, this);
     }
 
     void UpdateLocations(string SpawnLocationName, vector SpawnLocation, float RandomRadius)
     {
         if(!SpawnLocationName || !SpawnLocation || !RandomRadius) return;
         SpawnLocations.Insert(new ref SpawnLocationObject(SpawnLocationName, SpawnLocation, RandomRadius));
-        JsonFileLoader<SpawnSelectConfig>.JsonSaveFile(m_ConfigPath, this);
+        JsonFileLoader<SpawnSelectConfig>.JsonSaveFile(m_SSConfigPath, this);
     }
 
     void DeleteLocation(string SpawnLocationName, vector SpawnLocation, float RandomRadius)
@@ -56,19 +56,19 @@ class SpawnSelectConfig
             {
                 SpawnLocations.Remove(i);
             }
-            JsonFileLoader<SpawnSelectConfig>.JsonSaveFile(m_ConfigPath, this);
+            JsonFileLoader<SpawnSelectConfig>.JsonSaveFile(m_SSConfigPath, this);
         }
     }
 
     static ref SpawnSelectConfig LoadConfig()
     {
         ref SpawnSelectConfig settings = new SpawnSelectConfig();
-        if(!FileExist(m_ConfigDIR))
-            MakeDirectory(m_ConfigDIR);
-        if(FileExist(m_ConfigPath))
+        if(!FileExist(m_SSConfigDIR))
+            MakeDirectory(m_SSConfigDIR);
+        if(FileExist(m_SSConfigPath))
         {
             LogLine("Found server-config loading existing config...");
-            JsonFileLoader<SpawnSelectConfig>.JsonLoadFile(m_ConfigPath, settings);
+            JsonFileLoader<SpawnSelectConfig>.JsonLoadFile(m_SSConfigPath, settings);
         }
         else
         {
