@@ -35,7 +35,6 @@ class SpawnSelectConfig
         JsonFileLoader<SpawnSelectConfig>.JsonSaveFile(m_ConfigPath, this);
     }
 
-    //string Classname, string Id, vector UsePosition, float UseRadius, ref array<ref SpawnLocationObject> Spawn
     void UpdateTickets(string Classname, string Id, vector UsePosition, float UseRadius, ref array<ref SpawnLocationObject> Spawn)
     {
         SpawnTickets.Insert(new ref SpawnTicketObject(Classname, Id, UsePosition, UseRadius, Spawn));
@@ -47,6 +46,18 @@ class SpawnSelectConfig
         if(!SpawnLocationName || !SpawnLocation || !RandomRadius) return;
         SpawnLocations.Insert(new ref SpawnLocationObject(SpawnLocationName, SpawnLocation, RandomRadius));
         JsonFileLoader<SpawnSelectConfig>.JsonSaveFile(m_ConfigPath, this);
+    }
+
+    void DeleteLocation(string SpawnLocationName, vector SpawnLocation, float RandomRadius)
+    {
+        for(int i = 0; i < SpawnLocations.Count(); i++)
+        {
+            if(SpawnLocations.Get(i).GetName() == SpawnLocationName && SpawnLocations.Get(i).GetExactSpot() == SpawnLocation && SpawnLocations.Get(i).GetExactRadius() == RandomRadius)
+            {
+                SpawnLocations.Remove(i);
+            }
+            JsonFileLoader<SpawnSelectConfig>.JsonSaveFile(m_ConfigPath, this);
+        }
     }
 
     static ref SpawnSelectConfig LoadConfig()

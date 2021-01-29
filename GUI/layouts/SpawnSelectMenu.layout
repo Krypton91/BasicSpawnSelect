@@ -220,7 +220,7 @@ FrameWidgetClass SpawnSelectRoot {
       }
       EditBoxWidgetClass SpawnLocationName {
        color 0.1569 0.2745 0.6235 1
-       position 0.31856 0.66391
+       position 0.248 0.65151
        size 0.33965 0.28014
        hexactpos 0
        vexactpos 0
@@ -231,8 +231,8 @@ FrameWidgetClass SpawnSelectRoot {
       }
       TextWidgetClass TextWidget8 {
        ignorepointer 1
-       position 0.01339 0.69231
-       size 0.29965 0.23631
+       position 0.00475 0.67991
+       size 0.23773 0.23631
        hexactpos 0
        vexactpos 0
        hexactsize 0
@@ -241,19 +241,28 @@ FrameWidgetClass SpawnSelectRoot {
        font "gui/fonts/metron22"
        "text halign" right
       }
-      ButtonWidgetClass BtnMarkOnMap {
+      EditBoxWidgetClass SpawnLocRadiusBox {
        color 0.1569 0.2745 0.6235 1
-       position 0.011 0.0503
-       size 0.31827 0.2879
-       halign right_ref
-       valign bottom_ref
+       position 0.81811 0.66172
+       size 0.17192 0.28014
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style Colorable
-       text "Open Map"
+       style DefaultBorder
        font "gui/fonts/metron22"
+      }
+      TextWidgetClass TextWidget9 {
+       ignorepointer 1
+       position 0.60024 0.67243
+       size 0.2133 0.23631
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "Spawn Radius: "
+       font "gui/fonts/metron22"
+       "text halign" right
       }
      }
     }

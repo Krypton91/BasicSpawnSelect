@@ -24,8 +24,10 @@ modded class MissionServer extends MissionBase
 			}
 			if(CreateCharacter(identity, pos, ctx, characterType))
 			{
+				EquipCharacter(GetGame().GetMenuDefaultCharacterData());
 				GetSpawnSelectServer().SendClientToSpawnSelectMenu(identity);
 			}
+			return m_player;
 		}
 		return super.OnClientNewEvent(identity, pos, ctx);
 	}

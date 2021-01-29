@@ -1,4 +1,4 @@
-const protected static string m_AdminsPath = m_ProfileDIR + m_ConfigDIR + "/" + "adminConfig.json";
+const protected static string m_AdminsPath = m_ProfileDIR + m_ConfigDIR + "/" + "admin-config.json";
 
 class AdminSpawnSelectConfig
 {

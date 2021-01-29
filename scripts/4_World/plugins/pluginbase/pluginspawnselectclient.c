@@ -35,12 +35,10 @@ class PluginBasicSpawnSelectClient extends PluginBase
         {
             m_SpawnMenu = BasicSpawnSelectMenu.Cast(GetGame().GetUIManager().EnterScriptedMenu(BASIC_SPAWNSELECTMENU, null));
         }
-        #ifdef BASIC_SPAWN_SELECT_DEBUG
-        else if(GetGame().GetUIManager().GetMenu() != NULL && m_SpawnMenu && m_SpawnMenu.IsSpawnMenuVisible())
+        else if(GetGame().GetUIManager().GetMenu() != NULL && m_SpawnMenu && m_SpawnMenu.IsSpawnMenuVisible() && IsLocalPlayerAdmin())
         {
-            GetGame().GetUIManager().HideScriptedMenu(m_SpawnMenu);
+            GetGame().GetUIManager().Back();
         }
-        #endif
         else
         {
             if(GetGame().GetUIManager().GetMenu() == NULL && !m_SpawnMenu.IsSpawnMenuVisible())
@@ -81,6 +79,7 @@ class PluginBasicSpawnSelectClient extends PluginBase
 			}																					
 		}
     }
+
     /* Getter & Setter Section */
     ref array<ref SpawnTicketObject> GetPossibleSpawnTickets()
     {

@@ -21,8 +21,12 @@ class PluginBasicSpawnSelectServer extends PluginBase
         }
 
         GetRPCManager().AddRPC("BasicSpawnSelect","SERVER_TELEPORTMETOSPAWN", this, SingleplayerExecutionType.Server);
+
+        /* Admin Stuff */
         GetRPCManager().AddRPC("BasicSpawnSelect","SERVER_ADDNEWSPAWNTICKET", this, SingleplayerExecutionType.Server);
         GetRPCManager().AddRPC("BasicSpawnSelect","SERVER_ADDNEWSPAWN", this, SingleplayerExecutionType.Server);
+        GetRPCManager().AddRPC("BasicSpawnSelect","SERVER_RELOACONFIG", this, SingleplayerExecutionType.Server);
+        GetRPCManager().AddRPC("BasicSpawnSelect","SERVER_DELETESPAWN", this, SingleplayerExecutionType.Server);
     }
 
     void SERVER_TELEPORTMETOSPAWN(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
@@ -34,7 +38,6 @@ class PluginBasicSpawnSelectServer extends PluginBase
                 
             SpawnLocationObject m_choosenSpawn = data.param1;
             PlayerBase player = data.param2;
-            LogLine("Client: " + sender.GetName() + "<steamID: " + sender.GetPlainId() + " > Sendet an RPC to teleport him to Locaction: " + data.param1.GetName());
             if(player)
             {
                 vector FinalSpawnPos = m_choosenSpawn.GetSpawnRandomSpot();
@@ -43,7 +46,7 @@ class PluginBasicSpawnSelectServer extends PluginBase
             }
             else
             {
-                Error("Player was not valid! if you see this in crash it was not because this!");
+                Error("Player was not valid! if you see this befor an crash it was not because this!");
             }
         }
     }
@@ -80,6 +83,48 @@ class PluginBasicSpawnSelectServer extends PluginBase
                 ref SpawnLocationObject   m_newLocationObj = data.param1;
                 //string SpawnLocationName, vector SpawnLocation, float RandomRadius
                 m_ServerConfig.UpdateLocations(m_newLocationObj.GetName(), m_newLocationObj.GetExactSpot(), m_newLocationObj.GetExactRadius());
+            }
+            else
+            {
+                GetGame().AdminLog("[BasicSpawnSelect] -> Player with SteamID: " + sender.GetPlainId() + " tryed to send an Admin RPC maybe its an Hacker!");
+            }
+        }
+    }
+
+    void SERVER_DELETESPAWN(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+    {
+        if(type == CallType.Server)
+        {
+            if(IsSenderSSAdmin(sender.GetPlainId()))
+            {
+                Param1<ref SpawnLocationObject> data;
+                if( !ctx.Read( data ) ) return;
+
+                ref SpawnLocationObject   m_newLocationObj = data.param1;
+                m_ServerConfig.DeleteLocation(m_newLocationObj.GetName(), m_newLocationObj.GetExactSpot(), m_newLocationObj.GetExactRadius());
+            }
+            else
+            {
+                GetGame().AdminLog("[BasicSpawnSelect] -> Player with SteamID: " + sender.GetPlainId() + " tryed to send an Admin RPC maybe its an Hacker!");
+            }
+        }
+    }
+
+    void SERVER_RELOACONFIG(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+    {
+        if(type == CallType.Server)
+        {
+            if(IsSenderSSAdmin(sender.GetPlainId()))
+            {
+                //Reload Config
+                m_ServerConfig = GetBasicSpawnSelectServerConfig();
+                array<Man> AllOnlinePlayers = new array<Man>();
+                GetGame().GetPlayers(AllOnlinePlayers);
+
+                for(int i = 0; i < AllOnlinePlayers.Count(); i++)
+                {
+                    SendConfigToClient(AllOnlinePlayers.Get(i).GetIdentity());//Sync new config to all Clients on server.
+                }
             }
             else
             {

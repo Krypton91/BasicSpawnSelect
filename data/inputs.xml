@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<modded_inputs>
+    <inputs>
+        <actions>
+            <input name="UABasicSpawnSelection" loc="AdminMenu" />
+        </actions>
+    </inputs>
+    <preset>
+        <input name="UABasicSpawnSelection">
+            <btn name="kJ" />
+        </input>
+    </preset>
+</modded_inputs>

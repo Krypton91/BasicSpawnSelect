@@ -13,7 +13,6 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
     protected Widget                                m_AdminSectionCard;
     protected Widget                                m_AdminTicketModuleCard;
     protected ButtonWidget                          m_BtnAdminCloseSection;
-    protected ButtonWidget                          m_BtnAdminOpenMap;
     protected ButtonWidget                          m_BtnAdminNeedHelp;
     protected ButtonWidget                          m_BtnAdminSendToServer;
     protected EditBoxWidget                         m_AdminSpawnBoxPosX;
@@ -25,6 +24,7 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
     protected EditBoxWidget                         m_AdminTicketUseBoxPosZ;
     protected EditBoxWidget                         m_AdminTicketUseRadius;
     protected EditBoxWidget                         m_AdminTicketClassName;
+    protected EditBoxWidget                         m_AdminSpawnLocRadiusBox;
     protected CheckBoxWidget                        m_AdminInsertAsSpawnTicketBox;
     protected CheckBoxWidget                        m_AdminUseItemInHandsBox;
 
@@ -47,7 +47,6 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
             m_BtnAdminDeleteSpawn           = ButtonWidget.Cast(layoutRoot.FindAnyWidget("BtnDeleteSpawn"));
             m_BtnAdminReloadConfig          = ButtonWidget.Cast(layoutRoot.FindAnyWidget("BtnReloadConfig"));
             m_BtnAdminCloseSection          = ButtonWidget.Cast(layoutRoot.FindAnyWidget("BtnClose"));
-            m_BtnAdminOpenMap               = ButtonWidget.Cast(layoutRoot.FindAnyWidget("BtnMarkOnMap"));
             m_BtnAdminNeedHelp              = ButtonWidget.Cast(layoutRoot.FindAnyWidget("BtnTutorial"));
             m_BtnAdminSendToServer          = ButtonWidget.Cast(layoutRoot.FindAnyWidget("BtnSendNewSpawnToServer"));
             m_AdminSpawnBoxPosX             = EditBoxWidget.Cast(layoutRoot.FindAnyWidget("SpawnPosXEdit"));
@@ -59,6 +58,7 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
             m_AdminTicketUseBoxPosZ         = EditBoxWidget.Cast(layoutRoot.FindAnyWidget("SpawnPosZEdit0"));
             m_AdminTicketUseRadius          = EditBoxWidget.Cast(layoutRoot.FindAnyWidget("UsePosRadiusEdit"));
             m_AdminTicketClassName          = EditBoxWidget.Cast(layoutRoot.FindAnyWidget("UsePosClassName"));
+            m_AdminSpawnLocRadiusBox        = EditBoxWidget.Cast(layoutRoot.FindAnyWidget("SpawnLocRadiusBox"));
             m_AdminInsertAsSpawnTicketBox   = CheckBoxWidget.Cast(layoutRoot.FindAnyWidget("CheckBoxIsTicket"));
             m_AdminUseItemInHandsBox        = CheckBoxWidget.Cast(layoutRoot.FindAnyWidget("CheckUseItemInHands"));
             m_BasicSpawnMapWidget           = MapWidget.Cast(layoutRoot.FindAnyWidget("SpawnSelectMap"));
@@ -118,7 +118,6 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
         switch(w)
         {
             case m_BtnSpawnOnSelectedLocation:
-                if(!row_index || row_index == -1) return false;
                 HandleTeleportToSpawnPoint(row_index);
                 GetGame().GetUIManager().HideScriptedMenu(this);
                 break;
@@ -130,7 +129,7 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
                 HandleOpenAdminSection();
                 break;
             case m_BtnAdminDeleteSpawn:
-                HandleAdminDeleteSpawn();
+                HandleAdminDeleteSpawn(row_index);
                 break;
             case m_BtnAdminReloadConfig:
                 HandleAdminReloadConfig();
@@ -184,10 +183,10 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
 
     void HandleTeleportToSpawnPoint(int selected_rowIndex)
     {
-        if(!selected_rowIndex && selected_rowIndex == -1) return;
-
+        //Print("Teleport to SP triggert! with index: " + selected_rowIndex);
         SpawnLocationObject m_selectedSpawn;
         m_selectedSpawn = m_PossibleSpawns.Get(selected_rowIndex);
+        //Print("Name of spawn: " + m_PossibleSpawns.Get(selected_rowIndex).GetName());
         if(m_selectedSpawn)
         {
             PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
@@ -299,6 +298,7 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
     protected void HandleAdminInsertNewSpawn()
     {
         PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+        if(!player) return;
         if(GetSpawnSelectClient().IsLocalPlayerAdmin())
         {
             if(!AdminIsAnyValueNullOrEmpty())
@@ -306,16 +306,18 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
                 local float SS_SpawnPosX = m_AdminSpawnBoxPosX.GetText().ToFloat();
                 local float SS_SpawnPosY = m_AdminSpawnBoxPosY.GetText().ToFloat();
                 local float SS_SpawnPosZ = m_AdminSpawnBoxPosZ.GetText().ToFloat();
+                local float SS_SpawnRad  = m_AdminSpawnLocRadiusBox.GetText().ToFloat();
                 local string SS_LocationName = m_AdminSpawnBoxLocationName.GetText();
                 local ref SpawnLocationObject newSpawnLocObj;
-                if(SS_SpawnPosX && SS_SpawnPosY && SS_SpawnPosZ && SS_LocationName)
+                if(SS_SpawnPosX && SS_SpawnPosY && SS_SpawnPosZ && SS_SpawnRad && SS_LocationName)
                 {
                     local vector SS_SpawnVec = Vector(SS_SpawnPosX, SS_SpawnPosY, SS_SpawnPosZ);
                     if(!SS_SpawnVec) return;
-                    newSpawnLocObj = new ref SpawnLocationObject(SS_LocationName, SS_SpawnVec, 1000.00);
+                    newSpawnLocObj = new ref SpawnLocationObject(SS_LocationName, SS_SpawnVec, SS_SpawnRad);
                     if(!m_AdminInsertAsSpawnTicketBox.IsChecked())
                     {
                         GetRPCManager().SendRPC("BasicSpawnSelect", "SERVER_ADDNEWSPAWN", new Param1< ref SpawnLocationObject >( newSpawnLocObj ), true);
+                        player.MessageStatus("[BasicSpawnSelect] -> SpawnLocation sucessfully created! Please Reload the config now!");
                     }
                     else
                     {
@@ -334,6 +336,7 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
                             newlocobjarray.Insert(newSpawnLocObj);
                             local ref SpawnTicketObject newSpawnTicketObj = new ref SpawnTicketObject(SS_SpawnTicketName, "NONE", SS_UseVec, SS_UseRad, newlocobjarray);
                             GetRPCManager().SendRPC("BasicSpawnSelect", "SERVER_ADDNEWSPAWNTICKET", new Param1< ref SpawnTicketObject >( newSpawnTicketObj ), true);
+                            player.MessageStatus("[BasicSpawnSelect] -> SpawnTicket sucessfully created!! Please Reload the config now!");
                         }
                         else
                         {
@@ -360,11 +363,16 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
         }
     }
 
-    void HandleAdminDeleteSpawn()
+    void HandleAdminDeleteSpawn(int row_index)
     {
+        Print("Searching for element with id: " + row_index);
+        Print("Found entry: " + m_PossibleSpawns.Get(row_index).GetName());
         if(GetSpawnSelectClient().IsLocalPlayerAdmin())
         {
-            //GetRPCManager().SendRPC("BasicSpawnSelect", "SERVER_DELETESELECTEDSPAWN", new Param1< ref SpawnLocationObject >( m_selectedSpawn ), true);
+            PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+            if(!player) return;
+            GetRPCManager().SendRPC("BasicSpawnSelect", "SERVER_DELETESPAWN", new Param1< ref SpawnLocationObject >( m_PossibleSpawns.Get(row_index) ), true);
+            player.MessageStatus("[BasicSpawnSelect] -> Spawn Deleted! Please reload the config now!");
         }
         else
         {
@@ -380,6 +388,10 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
         if(GetSpawnSelectClient().IsLocalPlayerAdmin())
         {
             GetRPCManager().SendRPC("BasicSpawnSelect", "SERVER_RELOACONFIG", null, true);
+            Close();
+            PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+            if(!player) return;
+            player.MessageStatus("[BasicSpawnSelect] -> Config Sucessfully reloadet!");
         }
         else
         {

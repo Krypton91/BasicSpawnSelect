@@ -23,7 +23,7 @@ class CfgMods
 	{
 		dir = "BasicSpawnSelect";
 		picture = "";
-		action = "";
+		action = "https://github.com/Krypton91/BasicSpawnSelect";
 		hideName = 1;
 		hidePicture = 1;
 		name = "Spawn Select";
@@ -33,6 +33,7 @@ class CfgMods
 		version = 0.1;
 		extra = 0;
 		type = "mod";
+		inputs = "BasicSpawnSelect/data/inputs.xml";
 		dependencies[] = {"Mission", "World", "Game"};
 
 	    class defs
