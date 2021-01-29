@@ -5,6 +5,7 @@ class BasicSpawnSelect_SpawnTicket_base extends ItemBase
 
 	void BasicSpawnSelect_SpawnTicket_base()
 	{
+		/* EXAMPLE HOW YOU CAN ASSIGN AN ID to the Object with trader or something like this!
 		if(!m_ServerConfig)
 			m_ServerConfig = GetSpawnSelectClient().m_ServerConfig;
 		if(m_ServerConfig && m_ServerConfig.SpawnSystemMode == 2)
@@ -21,9 +22,35 @@ class BasicSpawnSelect_SpawnTicket_base extends ItemBase
 		}
 		else
 		{
-			Print("[BasicSpawnSelect]-> Wrong SystemSpawnMode in server config to use this!");
+			LogLine("[BasicSpawnSelect]-> Wrong SystemSpawnMode in server config to use this!");
 		}
+		*/
 	}
+
+	//!return if this spawnticket can be used on parameters position! (Comes from server config.)
+	bool CanUseOnPosition(vector Position)
+    {
+		if(GetGame().IsClient() && !GetGame().IsServer())
+		{
+			if(!m_ServerConfig)
+				m_ServerConfig = GetSpawnSelectClient().m_ServerConfig;
+			
+			if(m_ServerConfig.SpawnSystemMode != 2) return false; //always falls if system mode is not 1!
+			if(Position)
+			{
+				for(int i = 0; i < m_ServerConfig.SpawnTickets.Count(); i++)
+				{
+					if(m_ServerConfig.SpawnTickets.Get(i).GetClassName() == this.GetType())
+					{
+						return m_ServerConfig.SpawnTickets.Get(i).IsInUseRange(Position);
+					}
+				}
+			}
+			return false;
+		}
+        //If is server....
+        return true;
+    }
 
 	override bool OnStoreLoad(ParamsReadContext ctx, int version)
 	{   
@@ -39,7 +66,7 @@ class BasicSpawnSelect_SpawnTicket_base extends ItemBase
 
 	void AssignNewIdToTicket(string newID)
 	{
-		m_TicketID = newID;	
+		m_TicketID = newID;
 	}
 
 	bool IsSpawnSelectTicket()

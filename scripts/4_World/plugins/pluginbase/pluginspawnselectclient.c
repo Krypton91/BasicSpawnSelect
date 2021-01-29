@@ -1,21 +1,36 @@
 class PluginBasicSpawnSelectClient extends PluginBase
 {
     protected ref BasicSpawnSelectMenu  m_SpawnMenu;
-    ref SpawnSelectConfig     m_ServerConfig = new ref SpawnSelectConfig();
+    ref SpawnSelectConfig               m_ServerConfig;
+    protected bool                      m_Admin;
+
     void PluginBasicSpawnSelectClient()
     {
         Init();
     }
 
+    void ~PluginBasicSpawnSelectClient()
+    {
+        SpawnSelectConfigRecived = false;
+        if(m_SpawnMenu)
+            delete m_SpawnMenu;
+        if(m_ServerConfig)
+            delete m_ServerConfig;
+        GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.TryToOpenSpawnSelectMenu);
+    }
+
     void Init()
     {
-        LogLine("Client Init Start");
+        if(!m_ServerConfig)
+            m_ServerConfig = new ref SpawnSelectConfig();
+
         GetRPCManager().AddRPC("BasicSpawnSelect","ServerConfigResponse", this, SingleplayerExecutionType.Client);
         GetRPCManager().AddRPC("BasicSpawnSelect","OpenSpawnSelectMenu", this, SingleplayerExecutionType.Client);
     }
 
     void OpenSpawnMenu()
     {
+        if(!SpawnSelectConfigRecived) return; //Make sure we recived the server config.
         if(GetGame().GetUIManager().GetMenu() == NULL && m_SpawnMenu == null)
         {
             m_SpawnMenu = BasicSpawnSelectMenu.Cast(GetGame().GetUIManager().EnterScriptedMenu(BASIC_SPAWNSELECTMENU, null));
@@ -23,7 +38,6 @@ class PluginBasicSpawnSelectClient extends PluginBase
         #ifdef BASIC_SPAWN_SELECT_DEBUG
         else if(GetGame().GetUIManager().GetMenu() != NULL && m_SpawnMenu && m_SpawnMenu.IsSpawnMenuVisible())
         {
-            //HideMenu Todo: Purge this in release version!
             GetGame().GetUIManager().HideScriptedMenu(m_SpawnMenu);
         }
         #endif
@@ -40,10 +54,11 @@ class PluginBasicSpawnSelectClient extends PluginBase
     {
         if(type == CallType.Client)
         {
-            Param1<ref SpawnSelectConfig> data;
+            Param2<ref SpawnSelectConfig, bool> data;
             if ( !ctx.Read( data ) ) return;
             m_ServerConfig = data.param1;
-            LogLine("Server config sucessfully recived!");
+            m_Admin        = data.param2;
+            SpawnSelectConfigRecived = true;
         }
     }
 
@@ -57,24 +72,29 @@ class PluginBasicSpawnSelectClient extends PluginBase
 
     void TryToOpenSpawnSelectMenu()
     {
-        if (g_Game.GetUIManager().GetMenu() == NULL)
+        if (GetGame().GetUIManager().GetMenu() == NULL)
 		{
-			if (g_Game.GetMissionState() == DayZGame.MISSION_STATE_GAME && GetGame().GetMission().GetHud())
+			if (g_Game.GetMissionState() == DayZGame.MISSION_STATE_GAME && GetGame().GetMission().GetHud() && SpawnSelectConfigRecived)
 			{
                 OpenSpawnMenu();
 				GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.TryToOpenSpawnSelectMenu);		
 			}																					
 		}
     }
-
+    /* Getter & Setter Section */
     ref array<ref SpawnTicketObject> GetPossibleSpawnTickets()
     {
         return m_ServerConfig.SpawnTickets;
     }
-    /* Getter & Setter Section */
+    
     ref array<ref SpawnLocationObject> GetPossibleServerSpawns()
     {
         return m_ServerConfig.SpawnLocations;
+    }
+
+    bool IsLocalPlayerAdmin()
+    {
+        return m_Admin;
     }
 };
 

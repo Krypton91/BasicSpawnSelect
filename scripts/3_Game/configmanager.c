@@ -4,8 +4,6 @@ const protected static string m_ConfigPath = m_ProfileDIR + m_ConfigDIR + "/" + 
 
 class SpawnSelectConfig
 {
-    float                               MinSpawnDistanceToDeathBody;
-    float                               CooldownForSelectedLocation;
     int                                 SpawnSystemMode;
     ref array<ref SpawnLocationObject>  SpawnLocations;
     ref array<ref SpawnTicketObject>    SpawnTickets;
@@ -18,15 +16,13 @@ class SpawnSelectConfig
 
     void DefaultSettings()
     {
-        MinSpawnDistanceToDeathBody = 5000;
-        CooldownForSelectedLocation = 10;
         SpawnSystemMode = 1;
         SpawnLocations.Insert(new ref SpawnLocationObject("Kamenka", Vector(1892.109985,6.171125,2244.129883), 500));
         SpawnLocations.Insert(new ref SpawnLocationObject("West Balota", Vector(4025.159912,6.494447,2620.459961), 1000));
         SpawnLocations.Insert(new ref SpawnLocationObject("Chernogorsk", Vector(6387.430176,9.290138,2699.479980), 1000));
         SpawnLocations.Insert(new ref SpawnLocationObject("Elektrozavodsk", Vector(10322.400391,5.811278,2171.159912), 1000));
-        SpawnTickets.Insert(new ref SpawnTicketObject("BasicSpawnSelect_SpawnTicket", "Bandit", SpawnLocations));
-        SpawnTickets.Insert(new ref SpawnTicketObject("BasicSpawnSelect_SpawnTicket", "Admin",  SpawnLocations));
+        SpawnTickets.Insert(new ref SpawnTicketObject("BasicSpawnSelect_SpawnTicket", "Bandit", Vector(4111.30, 0, 8912.79), 50, SpawnLocations));
+        SpawnTickets.Insert(new ref SpawnTicketObject("BasicSpawnSelect_SpawnTicket", "Admin",  Vector(4111.30, 0, 8912.79), 50, SpawnLocations));
 
         SaveSpawnConfig();
     }
@@ -36,6 +32,20 @@ class SpawnSelectConfig
         if (!FileExist(m_ProfileDIR + m_ConfigDIR + "/"))
 			MakeDirectory(m_ProfileDIR + m_ConfigDIR + "/");
 
+        JsonFileLoader<SpawnSelectConfig>.JsonSaveFile(m_ConfigPath, this);
+    }
+
+    //string Classname, string Id, vector UsePosition, float UseRadius, ref array<ref SpawnLocationObject> Spawn
+    void UpdateTickets(string Classname, string Id, vector UsePosition, float UseRadius, ref array<ref SpawnLocationObject> Spawn)
+    {
+        SpawnTickets.Insert(new ref SpawnTicketObject(Classname, Id, UsePosition, UseRadius, Spawn));
+        JsonFileLoader<SpawnSelectConfig>.JsonSaveFile(m_ConfigPath, this);
+    }
+
+    void UpdateLocations(string SpawnLocationName, vector SpawnLocation, float RandomRadius)
+    {
+        if(!SpawnLocationName || !SpawnLocation || !RandomRadius) return;
+        SpawnLocations.Insert(new ref SpawnLocationObject(SpawnLocationName, SpawnLocation, RandomRadius));
         JsonFileLoader<SpawnSelectConfig>.JsonSaveFile(m_ConfigPath, this);
     }
 

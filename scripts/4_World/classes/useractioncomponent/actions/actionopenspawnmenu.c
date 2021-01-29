@@ -2,10 +2,6 @@ class ActionOpenSpawnMenu: ActionContinuousBase
 {
 	void ActionOpenSpawnMenu()
 	{
-		//m_CallbackClass = ActionReadPaperCB;
-		//m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_VIEWNOTE;
-		//m_FullBody = true;
-		//m_StanceMask = DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT | DayZPlayerConstants.STANCEMASK_PRONE;
 	}
 	
 	override void CreateConditionComponents()  
@@ -18,7 +14,21 @@ class ActionOpenSpawnMenu: ActionContinuousBase
 	{
 		return false;
 	}
-
+	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
+	{
+		if(!item && item.IsRuined())
+			return false;
+		if(!SpawnSelectConfigRecived && !GetGame().IsServer() && GetGame().IsMultiplayer()) return false; //Duplicate make sure we recived the server config. gets resettet if ClientManager gets destroyed!
+		BasicSpawnSelect_SpawnTicket_base spawn_ticket;
+		if(Class.CastTo(spawn_ticket, item))
+		{
+			if(spawn_ticket.CanUseOnPosition(player.GetPosition()))
+			{  
+				return true;
+			}
+		}
+		return false;
+	}
 	override string GetText()
 	{
 		return "Open Spawn Menu";
