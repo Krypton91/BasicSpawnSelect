@@ -2,6 +2,7 @@ class PluginBasicSpawnSelectServer extends PluginBase
 {
     protected ref SpawnSelectConfig         m_ServerConfig;
     protected ref AdminSpawnSelectConfig    m_AdminConfig;
+    protected vector                        m_FreeSpawnSize = Vector(3,5,9);
     void PluginBasicSpawnSelectServer()
     {
         Init();
@@ -14,19 +15,23 @@ class PluginBasicSpawnSelectServer extends PluginBase
 
         if(!m_AdminConfig)
             m_AdminConfig = GetAdminConfig();
-        
-        for(int i = 0; i < m_AdminConfig.m_AdminSteamIDs.Count(); i++)
-        {
-            Print("Found Admin entry: " + m_AdminConfig.m_AdminSteamIDs.Get(i));
-        }
 
         GetRPCManager().AddRPC("BasicSpawnSelect","SERVER_TELEPORTMETOSPAWN", this, SingleplayerExecutionType.Server);
+        GetRPCManager().AddRPC("BasicSpawnSelect","SERVER_SENDCONFIGTOCLIENT", this, SingleplayerExecutionType.Server);
 
         /* Admin Stuff */
         GetRPCManager().AddRPC("BasicSpawnSelect","SERVER_ADDNEWSPAWNTICKET", this, SingleplayerExecutionType.Server);
         GetRPCManager().AddRPC("BasicSpawnSelect","SERVER_ADDNEWSPAWN", this, SingleplayerExecutionType.Server);
         GetRPCManager().AddRPC("BasicSpawnSelect","SERVER_RELOACONFIG", this, SingleplayerExecutionType.Server);
         GetRPCManager().AddRPC("BasicSpawnSelect","SERVER_DELETESPAWN", this, SingleplayerExecutionType.Server);
+    }
+
+    void SERVER_SENDCONFIGTOCLIENT(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+    {
+        if(type == CallType.Server)
+        {
+            SendConfigToClient(sender);
+        }
     }
 
     void SERVER_TELEPORTMETOSPAWN(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
@@ -41,6 +46,16 @@ class PluginBasicSpawnSelectServer extends PluginBase
             if(player)
             {
                 vector FinalSpawnPos = m_choosenSpawn.GetSpawnRandomSpot();
+                local int maxtrycounter = 0;
+                array<Object> excluded_objects = new array<Object>;
+		        array<Object> nearby_objects = new array<Object>;
+
+                while(GetGame().IsBoxColliding(FinalSpawnPos, player.GetOrientation(), m_FreeSpawnSize, excluded_objects, nearby_objects) && maxtrycounter < 50)
+                {
+                    FinalSpawnPos = m_choosenSpawn.GetSpawnRandomSpot();
+                    maxtrycounter++;
+                    //Print("SpawnBox was blocked searching new spawn try: " + maxtrycounter);
+                }
                 player.SetPosition(FinalSpawnPos);
                 player.SetOrientation(player.GetOrientation());
             }

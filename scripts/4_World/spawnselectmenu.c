@@ -89,6 +89,8 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
         GetGame().GetUIManager().ShowUICursor( true );
 
         SetIsSpawnMenuOpen( true );
+
+        m_LocationList.SelectRow(0);
 	}
 
     override void OnHide()
@@ -230,7 +232,7 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
             
             for(int i = 0; i < GetSpawnSelectClient().GetPossibleSpawnTickets().Count(); i++)
             {
-                bool entryFound = false;                                                                                            //this is how easy ids work! :)
+                bool entryFound = false;                                                                                                                        //this is how easy ids work! :)
                 if(GetSpawnSelectClient().GetPossibleSpawnTickets().Get(i).GetClassName() == item_in_hands.GetType() && spawnTicket.IsSpawnSelectTicket() /*&& spawnTicket.GetSpawnTicketId() == GetSpawnSelectClient().GetPossibleSpawnTickets().Get(i).GetId()*/)
                 {
                     entryFound = true;
@@ -272,7 +274,6 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
         if(GetSpawnSelectClient().IsLocalPlayerAdmin())
         {
             PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
-            //GetRPCManager().SendRPC("BasicSpawnSelect", "SERVER_ADMINADDNEWSPAWN", null, true);
     	    m_AdminSectionCard.Show(true);
             m_BasicSpawnMapWidget.Show(false);
 
@@ -365,8 +366,6 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
 
     void HandleAdminDeleteSpawn(int row_index)
     {
-        Print("Searching for element with id: " + row_index);
-        Print("Found entry: " + m_PossibleSpawns.Get(row_index).GetName());
         if(GetSpawnSelectClient().IsLocalPlayerAdmin())
         {
             PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());

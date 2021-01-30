@@ -23,7 +23,6 @@ modded class MissionGameplay extends MissionBase
             if (input.LocalPress("UABasicSpawnSelection", false) && GetSpawnSelectClient().IsLocalPlayerAdmin())
             {
                 GetSpawnSelectClient().OpenSpawnMenu();
-                Print("SpawnMennuAdminInput detected! try to open menu!");
             }
         }
     }

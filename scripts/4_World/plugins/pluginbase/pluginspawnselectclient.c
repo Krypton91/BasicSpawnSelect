@@ -26,6 +26,7 @@ class PluginBasicSpawnSelectClient extends PluginBase
 
         GetRPCManager().AddRPC("BasicSpawnSelect","ServerConfigResponse", this, SingleplayerExecutionType.Client);
         GetRPCManager().AddRPC("BasicSpawnSelect","OpenSpawnSelectMenu", this, SingleplayerExecutionType.Client);
+        GetRPCManager().SendRPC("BasicSpawnSelect", "SERVER_SENDCONFIGTOCLIENT", null, true);
     }
 
     void OpenSpawnMenu()
