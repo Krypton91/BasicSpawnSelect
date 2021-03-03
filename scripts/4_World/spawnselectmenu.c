@@ -160,10 +160,16 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
     void UpdateMarker()
     {
         local int row_index = m_LocationList.GetSelectedRow();
-        if(row_index != -1)
+        if(row_index)
         {
             HandleDrawSpotOnMap(row_index);
         }
+    }
+
+    void HideMenu()
+    {
+        GetGame().GetUIManager().Back();
+        SetIsSpawnMenuOpen(false);
     }
 
     void HandleTeleportToRandomPoint()
@@ -185,10 +191,8 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
 
     void HandleTeleportToSpawnPoint(int selected_rowIndex)
     {
-        //Print("Teleport to SP triggert! with index: " + selected_rowIndex);
         SpawnLocationObject m_selectedSpawn;
         m_selectedSpawn = m_PossibleSpawns.Get(selected_rowIndex);
-        //Print("Name of spawn: " + m_PossibleSpawns.Get(selected_rowIndex).GetName());
         if(m_selectedSpawn)
         {
             PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());

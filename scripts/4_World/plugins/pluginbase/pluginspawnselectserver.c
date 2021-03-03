@@ -11,7 +11,7 @@ class PluginBasicSpawnSelectServer extends PluginBase
     void Init()
     {
         if(!m_ServerConfig)
-            m_ServerConfig = GetBasicSpawnSelectServerConfig();
+            m_ServerConfig = GetBasicSpawnSelectServerConfig(false);
 
         if(!m_AdminConfig)
             m_AdminConfig = GetAdminConfig();
@@ -54,7 +54,6 @@ class PluginBasicSpawnSelectServer extends PluginBase
                 {
                     FinalSpawnPos = m_choosenSpawn.GetSpawnRandomSpot();
                     maxtrycounter++;
-                    //Print("SpawnBox was blocked searching new spawn try: " + maxtrycounter);
                 }
                 player.SetPosition(FinalSpawnPos);
                 player.SetOrientation(player.GetOrientation());
@@ -132,7 +131,7 @@ class PluginBasicSpawnSelectServer extends PluginBase
             if(IsSenderSSAdmin(sender.GetPlainId()))
             {
                 //Reload Config
-                m_ServerConfig = GetBasicSpawnSelectServerConfig();
+                m_ServerConfig = GetBasicSpawnSelectServerConfig(true);
                 array<Man> AllOnlinePlayers = new array<Man>();
                 GetGame().GetPlayers(AllOnlinePlayers);
 

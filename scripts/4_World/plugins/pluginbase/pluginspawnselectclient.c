@@ -16,6 +16,7 @@ class PluginBasicSpawnSelectClient extends PluginBase
             delete m_SpawnMenu;
         if(m_ServerConfig)
             delete m_ServerConfig;
+        
         GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.TryToOpenSpawnSelectMenu);
     }
 
@@ -47,6 +48,13 @@ class PluginBasicSpawnSelectClient extends PluginBase
                 GetGame().GetUIManager().ShowScriptedMenu(m_SpawnMenu, NULL);
             }
         }
+    }
+
+    //Just for Admins.
+    void CloseSpawnMenu()
+    {
+        if(m_SpawnMenu && m_SpawnMenu.IsVisible())
+            m_SpawnMenu.HideMenu();
     }
 
     void ServerConfigResponse(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
@@ -89,6 +97,22 @@ class PluginBasicSpawnSelectClient extends PluginBase
     
     ref array<ref SpawnLocationObject> GetPossibleServerSpawns()
     {
+        if(m_ServerConfig.SpawnSystemMode == 2)
+        {
+            PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+            ItemBase item_in_hands = ItemBase.Cast(player.GetItemInHands());
+            if(item_in_hands)
+            {
+                for(int i = 0; i < GetPossibleSpawnTickets().Count(); i++)
+                {
+                    if(GetPossibleSpawnTickets().Get(i).GetClassName() == item_in_hands.GetType())
+                    {
+                        //Spawn Ticket found retrun Location Obj.
+                        return GetPossibleSpawnTickets().Get(i).GetLocationsFromTicket();
+                    }
+                }
+            }
+        }
         return m_ServerConfig.SpawnLocations;
     }
 

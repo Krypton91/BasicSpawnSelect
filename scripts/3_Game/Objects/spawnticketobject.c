@@ -30,13 +30,12 @@ class SpawnTicketObject
         if(m_UsePosition && m_UseRadius && Position)
         {
             float CurrentRange = vector.Distance(Position, m_UsePosition);
-            if(CurrentRange <= m_UseRadius)
+            if(CurrentRange < m_UseRadius)
             {
                 return true;
             }
             return false;
         }
-        //If config is set to null can used on every position!
         return true;
     }
 

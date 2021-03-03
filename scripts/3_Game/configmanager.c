@@ -81,9 +81,14 @@ class SpawnSelectConfig
 
 /* Global Getter for config */
 static ref SpawnSelectConfig g_SpawnSelectConfig;
-static ref SpawnSelectConfig GetBasicSpawnSelectServerConfig() 
+static ref SpawnSelectConfig GetBasicSpawnSelectServerConfig(bool foreceReload) 
 {
-    if (g_Game.IsServer() && !g_SpawnSelectConfig) 
+
+    if (g_Game.IsServer() && !g_SpawnSelectConfig && !foreceReload) 
+    {
+        g_SpawnSelectConfig = SpawnSelectConfig.LoadConfig();
+    }
+    else if(foreceReload)
     {
         g_SpawnSelectConfig = SpawnSelectConfig.LoadConfig();
     }

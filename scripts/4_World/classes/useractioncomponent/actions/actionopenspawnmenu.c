@@ -18,7 +18,7 @@ class ActionOpenSpawnMenu: ActionContinuousBase
 	{
 		if(!item && item.IsRuined())
 			return false;
-		if(!SpawnSelectConfigRecived && !GetGame().IsServer() && GetGame().IsMultiplayer()) return false; //Duplicate make sure we recived the server config. gets resettet if ClientManager gets destroyed!
+			
 		BasicSpawnSelect_SpawnTicket_base spawn_ticket;
 		if(Class.CastTo(spawn_ticket, item))
 		{

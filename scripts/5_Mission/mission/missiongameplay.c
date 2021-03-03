@@ -1,18 +1,13 @@
 modded class MissionGameplay extends MissionBase 
 {
-    /*
     override void OnKeyRelease(int key)
 	{
-        if(key == KeyCode.KC_J)
+        if(key == KeyCode.KC_ESCAPE && GetSpawnSelectClient().IsLocalPlayerAdmin())
         {
-            if(GetSpawnSelectClient().IsLocalPlayerAdmin())
-            {
-                GetSpawnSelectClient().OpenSpawnMenu();
-            }
+            GetSpawnSelectClient().CloseSpawnMenu();
         }
         super.OnKeyRelease(key);
-	}
-    */
+    }
 
     override void OnUpdate(float timeslice) 
     {
