@@ -394,7 +394,7 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
             Close();
             PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
             if(!player) return;
-            player.MessageStatus("[BasicSpawnSelect] -> Config Sucessfully reloadet!");
+            player.MessageStatus("[BasicSpawnSelect] -> Config Sucessfully reloaded!");
         }
         else
         {
