@@ -76,7 +76,7 @@ class PluginBasicSpawnSelectServer extends PluginBase
 
                 ref SpawnTicketObject   m_newTicketObj = data.param1;
                 //string Classname, string Id, vector UsePosition, float UseRadius, ref array<ref SpawnLocationObject> Spawn
-                m_ServerConfig.UpdateTickets(m_newTicketObj.GetClassName(), m_newTicketObj.GetId(), m_newTicketObj.GetUsePostion(), m_newTicketObj.GetUseRadius(), m_newTicketObj.GetLocationsFromTicket());
+                m_ServerConfig.UpdateTickets(m_newTicketObj.GetClassName(), m_newTicketObj.GetId(), m_newTicketObj.GetUsePostion(), m_newTicketObj.GetUseRadius(), m_newTicketObj.GetLocationsFromTicket(), m_newTicketObj.GetUseDaysUTC(), m_newTicketObj.GetUseHoursUTC());
             }
             else
             {
