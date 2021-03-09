@@ -82,8 +82,8 @@ FrameWidgetClass SpawnSelectRoot {
    visible 0
    ignorepointer 1
    color 0.102 0.0784 0.0784 1
-   position -0.11404 0.02342
-   size 0.47433 0.54792
+   position -0.114 0.0334
+   size 0.4743 0.65
    halign center_ref
    valign center_ref
    hexactpos 0
@@ -129,8 +129,8 @@ FrameWidgetClass SpawnSelectRoot {
      vexactsize 0
     }
     CheckBoxWidgetClass CheckBoxIsTicket {
-     position 0.00155 -0.03414
-     size 0.36521 0.06293
+     position 0.0016 -0.1441
+     size 0.3652 0.0429
      halign center_ref
      valign center_ref
      hexactpos 0
@@ -142,8 +142,8 @@ FrameWidgetClass SpawnSelectRoot {
     PanelWidgetClass PanelNewSpawn {
      visible 1
      ignorepointer 1
-     position 0.00502 0.16485
-     size 0.98174 0.23328
+     position 0.005 0.1249
+     size 0.9817 0.1933
      hexactpos 0
      vexactpos 0
      hexactsize 0
@@ -269,8 +269,8 @@ FrameWidgetClass SpawnSelectRoot {
     PanelWidgetClass PanelInsertAsTicket {
      visible 0
      ignorepointer 1
-     position 0.00822 0.53304
-     size 0.98174 0.34453
+     position 0.0082 0.393
+     size 0.9817 0.4745
      hexactpos 0
      vexactpos 0
      hexactsize 0
@@ -278,8 +278,8 @@ FrameWidgetClass SpawnSelectRoot {
      {
       EditBoxWidgetClass SpawnPosXEdit0 {
        color 0.1569 0.2745 0.6235 1
-       position 0.01037 0.25051
-       size 0.31999 0.19734
+       position 0.0104 0.1605
+       size 0.32 0.1173
        hexactpos 0
        vexactpos 0
        hexactsize 0
@@ -289,8 +289,8 @@ FrameWidgetClass SpawnSelectRoot {
       }
       TextWidgetClass TextWidget3 {
        ignorepointer 1
-       position 0.00857 0.06252
-       size 0.32138 0.16647
+       position 0.0086 0.0125
+       size 0.3214 0.1265
        hexactpos 0
        vexactpos 0
        hexactsize 0
@@ -301,8 +301,8 @@ FrameWidgetClass SpawnSelectRoot {
       }
       EditBoxWidgetClass SpawnPosYEdit0 {
        color 0.1569 0.2745 0.6235 1
-       position 0.34137 0.24938
-       size 0.31998 0.19734
+       position 0.3414 0.1605
+       size 0.32 0.1173
        hexactpos 0
        vexactpos 0
        hexactsize 0
@@ -312,8 +312,8 @@ FrameWidgetClass SpawnSelectRoot {
       }
       TextWidgetClass TextWidget4 {
        ignorepointer 1
-       position 0.33957 0.06138
-       size 0.32138 0.16647
+       position 0.3396 0.0125
+       size 0.3214 0.1265
        hexactpos 0
        vexactpos 0
        hexactsize 0
@@ -324,8 +324,8 @@ FrameWidgetClass SpawnSelectRoot {
       }
       EditBoxWidgetClass SpawnPosZEdit0 {
        color 0.1569 0.2745 0.6235 1
-       position 0.66995 0.24839
-       size 0.31998 0.19734
+       position 0.67 0.1605
+       size 0.32 0.1173
        hexactpos 0
        vexactpos 0
        hexactsize 0
@@ -335,8 +335,8 @@ FrameWidgetClass SpawnSelectRoot {
       }
       TextWidgetClass TextWidget5 {
        ignorepointer 1
-       position 0.66815 0.0604
-       size 0.32138 0.16647
+       position 0.6682 0.0125
+       size 0.3214 0.1265
        hexactpos 0
        vexactpos 0
        hexactsize 0
@@ -347,8 +347,8 @@ FrameWidgetClass SpawnSelectRoot {
       }
       EditBoxWidgetClass UsePosClassName {
        color 0.1569 0.2745 0.6235 1
-       position 0.06173 0.03315
-       size 0.39566 0.19734
+       position 0.0617 0.1026
+       size 0.3957 0.1173
        halign center_ref
        valign bottom_ref
        hexactpos 0
@@ -360,8 +360,8 @@ FrameWidgetClass SpawnSelectRoot {
       }
       TextWidgetClass TextWidget6 {
        ignorepointer 1
-       position 0.0608 0.26529
-       size 0.39739 0.16647
+       position 0.0608 0.2353
+       size 0.3974 0.1265
        halign center_ref
        valign bottom_ref
        hexactpos 0
@@ -374,8 +374,8 @@ FrameWidgetClass SpawnSelectRoot {
       }
       TextWidgetClass TextWidget7 {
        ignorepointer 1
-       position -0.31551 0.26477
-       size 0.33493 0.16647
+       position -0.3155 0.2353
+       size 0.3349 0.1265
        halign center_ref
        valign bottom_ref
        hexactpos 0
@@ -388,8 +388,8 @@ FrameWidgetClass SpawnSelectRoot {
       }
       EditBoxWidgetClass UsePosRadiusEdit {
        color 0.1569 0.2745 0.6235 1
-       position -0.31474 0.03263
-       size 0.33348 0.19734
+       position -0.3147 0.1026
+       size 0.3335 0.1173
        halign center_ref
        valign bottom_ref
        hexactpos 0
@@ -400,8 +400,8 @@ FrameWidgetClass SpawnSelectRoot {
        font "gui/fonts/metron22"
       }
       CheckBoxWidgetClass CheckUseItemInHands {
-       position 0.38019 0.37115
-       size 0.23128 0.1537
+       position 0.3802 0.3411
+       size 0.2313 0.1037
        halign center_ref
        valign center_ref
        hexactpos 0
@@ -410,12 +410,66 @@ FrameWidgetClass SpawnSelectRoot {
        vexactsize 0
        text "Use Item in Hands?"
       }
+      EditBoxWidgetClass UseHours {
+       color 0.1569 0.2745 0.6235 1
+       position 0.2517 0.3926
+       size 0.48 0.1173
+       halign center_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style DefaultBorder
+       font "gui/fonts/metron22"
+      }
+      TextWidgetClass TextWidget10 {
+       ignorepointer 1
+       position 0.2517 0.5253
+       size 0.48 0.1265
+       halign center_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "Use Hours"
+       font "gui/fonts/metron22"
+       "text halign" center
+      }
+      TextWidgetClass TextWidget11 {
+       ignorepointer 1
+       position -0.2455 0.5253
+       size 0.48 0.1265
+       halign center_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "Use Days"
+       font "gui/fonts/metron22"
+       "text halign" center
+      }
+      EditBoxWidgetClass UseDays {
+       color 0.1569 0.2745 0.6235 1
+       position -0.2455 0.3926
+       size 0.48 0.1173
+       halign center_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style DefaultBorder
+       font "gui/fonts/metron22"
+      }
      }
     }
     ButtonWidgetClass BtnSendNewSpawnToServer {
      color 0.1569 0.2745 0.6235 1
-     position 0.68844 0.9043
-     size 0.2989 0.08035
+     position 0.6884 0.9243
+     size 0.2989 0.0603
      hexactpos 0
      vexactpos 0
      hexactsize 0
@@ -426,8 +480,8 @@ FrameWidgetClass SpawnSelectRoot {
     }
     ButtonWidgetClass BtnTutorial {
      color 0.1569 0.2745 0.6235 1
-     position 0.00886 0.90408
-     size 0.2989 0.08035
+     position 0.0089 0.9243
+     size 0.2989 0.0603
      hexactpos 0
      vexactpos 0
      hexactsize 0

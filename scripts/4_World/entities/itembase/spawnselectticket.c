@@ -42,7 +42,7 @@ class BasicSpawnSelect_SpawnTicket_base extends ItemBase
 				{
 					if(m_ServerConfig.SpawnTickets.Get(i).GetClassName() == this.GetType())
 					{
-						return m_ServerConfig.SpawnTickets.Get(i).IsInUseRange(Position);
+						return m_ServerConfig.SpawnTickets.Get(i).IsInUseRange(Position) && m_ServerConfig.SpawnTickets.Get(i).IsInUseTime();
 					}
 				}
 			}

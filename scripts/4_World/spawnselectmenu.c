@@ -24,6 +24,8 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
     protected EditBoxWidget                         m_AdminTicketUseBoxPosZ;
     protected EditBoxWidget                         m_AdminTicketUseRadius;
     protected EditBoxWidget                         m_AdminTicketClassName;
+    protected EditBoxWidget                         m_AdminTicketUseDays;
+    protected EditBoxWidget                         m_AdminTicketUseHours;
     protected EditBoxWidget                         m_AdminSpawnLocRadiusBox;
     protected CheckBoxWidget                        m_AdminInsertAsSpawnTicketBox;
     protected CheckBoxWidget                        m_AdminUseItemInHandsBox;
@@ -58,6 +60,8 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
             m_AdminTicketUseBoxPosZ         = EditBoxWidget.Cast(layoutRoot.FindAnyWidget("SpawnPosZEdit0"));
             m_AdminTicketUseRadius          = EditBoxWidget.Cast(layoutRoot.FindAnyWidget("UsePosRadiusEdit"));
             m_AdminTicketClassName          = EditBoxWidget.Cast(layoutRoot.FindAnyWidget("UsePosClassName"));
+            m_AdminTicketUseDays            = EditBoxWidget.Cast(layoutRoot.FindAnyWidget("UseDays"));
+            m_AdminTicketUseHours           = EditBoxWidget.Cast(layoutRoot.FindAnyWidget("UseHours"));
             m_AdminSpawnLocRadiusBox        = EditBoxWidget.Cast(layoutRoot.FindAnyWidget("SpawnLocRadiusBox"));
             m_AdminInsertAsSpawnTicketBox   = CheckBoxWidget.Cast(layoutRoot.FindAnyWidget("CheckBoxIsTicket"));
             m_AdminUseItemInHandsBox        = CheckBoxWidget.Cast(layoutRoot.FindAnyWidget("CheckUseItemInHands"));
@@ -332,6 +336,8 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
                         local float SS_UsePosZ = m_AdminTicketUseBoxPosZ.GetText().ToFloat();
                         local float SS_UseRad  = m_AdminTicketUseRadius.GetText().ToFloat();
                         local string SS_SpawnTicketName = m_AdminTicketClassName.GetText();
+                        local string SS_UseDays = m_AdminTicketUseDays.GetText();
+                        local string SS_UseHours = m_AdminTicketUseHours.GetText();
                         vector SS_UseVec = Vector(SS_UsePosX, SS_UsePosY, SS_UsePosZ);
 
                         if(SS_UseRad && SS_SpawnTicketName && SS_UseVec && newSpawnLocObj)
@@ -339,7 +345,7 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
                             //string Classname, string Id, vector UsePosition, float UseRadius, ref array<ref SpawnLocationObject> Spawn
                             ref array<ref SpawnLocationObject> newlocobjarray = new ref array<ref SpawnLocationObject>();
                             newlocobjarray.Insert(newSpawnLocObj);
-                            local ref SpawnTicketObject newSpawnTicketObj = new ref SpawnTicketObject(SS_SpawnTicketName, "NONE", SS_UseVec, SS_UseRad, newlocobjarray);
+                            local ref SpawnTicketObject newSpawnTicketObj = new ref SpawnTicketObject(SS_SpawnTicketName, "NONE", SS_UseVec, SS_UseRad, newlocobjarray, SS_UseDays, SS_UseHours);
                             GetRPCManager().SendRPC("BasicSpawnSelect", "SERVER_ADDNEWSPAWNTICKET", new Param1< ref SpawnTicketObject >( newSpawnTicketObj ), true);
                             player.MessageStatus("[BasicSpawnSelect] -> SpawnTicket sucessfully created!! Please Reload the config now!");
                         }

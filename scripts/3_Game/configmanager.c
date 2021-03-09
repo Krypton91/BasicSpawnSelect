@@ -21,8 +21,8 @@ class SpawnSelectConfig
         SpawnLocations.Insert(new ref SpawnLocationObject("West Balota", Vector(4025.159912,6.494447,2620.459961), 1000));
         SpawnLocations.Insert(new ref SpawnLocationObject("Chernogorsk", Vector(6387.430176,9.290138,2699.479980), 1000));
         SpawnLocations.Insert(new ref SpawnLocationObject("Elektrozavodsk", Vector(10322.400391,5.811278,2171.159912), 1000));
-        SpawnTickets.Insert(new ref SpawnTicketObject("BasicSpawnSelect_SpawnTicket", "Bandit", Vector(4111.30, 0, 8912.79), 50, SpawnLocations));
-        SpawnTickets.Insert(new ref SpawnTicketObject("BasicSpawnSelect_SpawnTicket", "Admin",  Vector(4111.30, 0, 8912.79), 50, SpawnLocations));
+        SpawnTickets.Insert(new ref SpawnTicketObject("BasicSpawnSelect_SpawnTicket", "Bandit", Vector(4111.30, 0, 8912.79), 50, SpawnLocations, "1 2 3 4 5 6 7 8", "8 10-10:15 11:20-12 12:30-12:45 13-14"));
+        SpawnTickets.Insert(new ref SpawnTicketObject("BasicSpawnSelect_SpawnTicket", "Admin",  Vector(4111.30, 0, 8912.79), 50, SpawnLocations, "", ""));
 
         SaveSpawnConfig();
     }
@@ -35,9 +35,9 @@ class SpawnSelectConfig
         JsonFileLoader<SpawnSelectConfig>.JsonSaveFile(m_SSConfigPath, this);
     }
 
-    void UpdateTickets(string Classname, string Id, vector UsePosition, float UseRadius, ref array<ref SpawnLocationObject> Spawn)
+    void UpdateTickets(string Classname, string Id, vector UsePosition, float UseRadius, ref array<ref SpawnLocationObject> Spawn, string UseDays, string UseHours)
     {
-        SpawnTickets.Insert(new ref SpawnTicketObject(Classname, Id, UsePosition, UseRadius, Spawn));
+        SpawnTickets.Insert(new ref SpawnTicketObject(Classname, Id, UsePosition, UseRadius, Spawn, UseDays, UseHours));
         JsonFileLoader<SpawnSelectConfig>.JsonSaveFile(m_SSConfigPath, this);
     }
 
