@@ -164,7 +164,7 @@ class BasicSpawnSelectMenu extends UIScriptedMenu
     void UpdateMarker()
     {
         local int row_index = m_LocationList.GetSelectedRow();
-        if(row_index)
+        if(row_index >= 0)
         {
             HandleDrawSpotOnMap(row_index);
         }
